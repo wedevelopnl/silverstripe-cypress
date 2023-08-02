@@ -1,0 +1,36 @@
+{
+    "name": "wedevelopnl/silverstripe-cypress",
+    "description": "Helper module to run cypress tests on a Silverstripe website inside the GitLab CI.",
+    "type": "silverstripe-vendormodule",
+    "keywords": [
+        "silverstripe",
+        "development",
+        "gitlab"
+    ],
+    "authors": [{
+        "name": "WeDevelop",
+        "email": "development@wedevelop.nl"
+    }],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.1",
+        "silverstripe/framework": "^4@stable | ^5@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "WeDevelop\\Cypress\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": false
+        }
+    },
+    "extra": {
+        "installer-name": "silverstripe-cypress",
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        }
+    }
+}

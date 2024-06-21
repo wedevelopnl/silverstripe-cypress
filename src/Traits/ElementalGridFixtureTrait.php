@@ -38,11 +38,12 @@ trait ElementalGridFixtureTrait {
     /**
      * @param class-string $elementClassName
      */
-    protected function addElementToPage(SiteTree $page, string $elementClassName, ...$args): void {
+    protected function addElementToPage(SiteTree $page, string $elementClassName, ...$args): BaseElement {
         $elementArgs = ($args[0] ?? []) + ['ParentID' => $page->ElementalAreaID];
 
         /** @var BaseElement $element */
         $element = call_user_func(sprintf('%s::create', $elementClassName), $elementArgs);
         $element->write();
+        return $element;
     }
 }

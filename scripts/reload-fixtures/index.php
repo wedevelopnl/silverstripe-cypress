@@ -104,7 +104,7 @@ else {
     header(sprintf('HTTP/1.0 %s %s', 204, 'Reload completed'));
 }
 
-if ('fastcgi_finish_request') {
+if (function_exists('fastcgi_finish_request')) {
     fastcgi_finish_request();
 }
 exit;

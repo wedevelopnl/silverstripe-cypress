@@ -13,7 +13,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 if (!class_exists(Process::class)) {
-    http_response_code(500);
+    header(sprintf('HTTP/1.0 %s %s', 500, 'Initialisation failed'));
     echo 'Install `symfony/console` inorder to enable this endpoint.';
     exit;
 }
@@ -97,9 +97,14 @@ $output = new BufferedOutput();
 $resultCode = $command->run($input, $output);
 
 if ($resultCode !== Command::SUCCESS) {
-    http_response_code(500);
+    header(sprintf('HTTP/1.0 %s %s', 500, 'Reload failed'));
     echo $output->fetch();
 }
 else {
-    http_response_code(204);
+    header(sprintf('HTTP/1.0 %s %s', 204, 'Reload completed'));
 }
+
+if ('fastcgi_finish_request') {
+    fastcgi_finish_request();
+}
+exit;

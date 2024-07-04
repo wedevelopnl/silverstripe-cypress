@@ -13,7 +13,9 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 if (!class_exists(Process::class)) {
-    throw new RuntimeException('Install `symfony/console` inorder to enable this endpoint.');
+    http_response_code(500);
+    echo 'Install `symfony/console` inorder to enable this endpoint.';
+    exit;
 }
 
 set_time_limit(600);

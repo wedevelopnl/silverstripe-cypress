@@ -42,7 +42,7 @@ function findPhpBinary()
 }
 
 $command = new class extends Command {
-    protected static $defaultName = 'wedevelop:reaload-fixtures';
+    protected static $defaultName = 'wedevelop:reload-fixtures';
     private const string SAKE_PATH = __DIR__ . '/../../../../silverstripe/framework/cli-script.php';
     private const int PROCESS_TIMEOUT = 600;
 
@@ -59,12 +59,16 @@ $command = new class extends Command {
             return Command::FAILURE;
         }
 
-        $process = new Process([
-            findPhpBinary(),
-            self::SAKE_PATH,
-            'dev/tasks/load-fixtures',
-            'directory=tests/fixtures',
-        ]);
+        try {
+            $process = new Process([
+                findPhpBinary(),
+                self::SAKE_PATH,
+                'dev/tasks/load-fixtures',
+                'directory=tests/fixtures',
+            ]);
+        } catch(RuntimeException) {
+            $output->writeln('Couldn\'t find php binairy');
+        }
         $process->setWorkingDirectory('/app');
         $process->setTimeout(self::PROCESS_TIMEOUT);
 
@@ -83,7 +87,7 @@ $command = new class extends Command {
 $application = new Application();
 $application->add($command);
 
-$command = $application->find('wedevelop:reaload-fixtures');
+$command = $application->find('wedevelop:reload-fixtures');
 
 $input = new ArrayInput([]);
 $output = new BufferedOutput();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 require __DIR__ . '/../../../../autoload.php';
 
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,7 +44,15 @@ function findPhpBinary()
     throw new RuntimeException('Unable to locate PHP binary.');
 }
 
-$command = new class extends Command {
+/**
+ * @internal
+ */
+#[AsCommand(
+    name: 'wedevelop:reload-fixtures',
+    description: 'Internal command to run Silverstripe fixtures',
+    hidden: true,
+)]
+final class WedevelopReloadFixtures extends Command {
     protected static $defaultName = 'wedevelop:reload-fixtures';
     private const string SAKE_PATH = __DIR__ . '/../../../../silverstripe/framework/cli-script.php';
     private const int PROCESS_TIMEOUT = 600;
@@ -87,7 +96,7 @@ $command = new class extends Command {
 };
 
 $application = new Application();
-$application->add($command);
+$application->add(new WedevelopReloadFixtures());
 
 $command = $application->find('wedevelop:reload-fixtures');
 

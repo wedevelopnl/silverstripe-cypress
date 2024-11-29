@@ -32,6 +32,11 @@ trait ElementalGridFixtureTrait {
         $page->ElementalAreaID = $elementalArea->write();
         $page->write();
 
+        // Always create a reference to the page
+        if (defined('static::REFERENCE')) {
+            $this->addReference(static::REFERENCE, $page);
+        }
+
         return $page;
     }
 
@@ -44,6 +49,10 @@ trait ElementalGridFixtureTrait {
         /** @var BaseElement $element */
         $element = call_user_func(sprintf('%s::create', $elementClassName), $elementArgs);
         $element->write();
+
+        // Update the page, but without versioning to prevent an overload.
+        $page->writeWithoutVersion();
+        
         return $element;
     }
 }
